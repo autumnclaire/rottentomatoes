@@ -15,6 +15,8 @@
 
 @property (nonatomic, strong) NSMutableArray *movies;
 
+- (void) makeMovies:(id)object;
+
 @end
 
 @implementation MovieListViewController
@@ -42,17 +44,20 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         id object = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        NSArray *movieList = [object valueForKeyPath:@"movies"]; //use the Movie object here
-        
-        for (int i = 0; i < movieList.count; i++) {
-            Movie *movie = [Movie alloc];
-            movie = [movie initWithDictionary:movieList[i]];
-            [self.movies addObject:movie];
-        }
-        
+        [self makeMovies:object];
         [self.tableView reloadData];
         NSLog(@"%@", object);
     }];
+}
+
+- (void) makeMovies:(id)object {
+    NSArray *movieList = [object valueForKeyPath:@"movies"]; //use the Movie object here
+    
+    for (int i = 0; i < movieList.count; i++) {
+        Movie *movie = [Movie alloc];
+        movie = [movie initWithDictionary:movieList[i]];
+        [self.movies addObject:movie];
+    }
 }
 
 - (void)viewDidLoad
@@ -87,6 +92,7 @@
     MovieCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     Movie *movie = [self.movies objectAtIndex:indexPath.row];
+    
     cell.movieTitle.text = movie.title;
     cell.movieSummary.text = movie.summary;
     cell.movieCast.text = movie.cast;
