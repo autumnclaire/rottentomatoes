@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *cast;
 @property (nonatomic, strong) NSString *summary;
-@property (nonatomic, strong) NSString *posterUrl;
+@property (nonatomic, strong) NSURL *posterUrl;
 
 
 

@@ -9,6 +9,7 @@
 #import "MovieListViewController.h"
 #import "Movie.h"
 #import "MovieCell.h"
+#import <UIImageView+AFNetworking.h>
 
 @interface MovieListViewController ()
 
@@ -89,8 +90,7 @@
     cell.movieTitle.text = movie.title;
     cell.movieSummary.text = movie.summary;
     cell.movieCast.text = movie.cast;
-    cell.posterImageView.image = movie.posterUrl;
-    
+    [cell.posterImageView setImageWithURL:movie.posterUrl];
     
     return cell;
 }

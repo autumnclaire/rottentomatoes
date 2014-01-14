@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+
 @interface MovieCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UIImageView *posterImageView;

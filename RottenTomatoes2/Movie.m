@@ -10,7 +10,7 @@
 
 @interface Movie()
 - (NSMutableString*) buildCastString: (NSDictionary*) dictionary;
-- (NSString*) buildPosterUrl: (NSDictionary*) dictionary;
+- (NSURL*) buildPosterUrl: (NSDictionary*) dictionary;
 
 @end
 
@@ -20,24 +20,26 @@
     self.title = [dictionary objectForKey:@"title"];
     self.summary = [dictionary objectForKey:@"synopsis"];
     self.cast = [self buildCastString:dictionary];
+    
     self.posterUrl = [self buildPosterUrl:dictionary];
     
     return self;
 }
 
-- (NSString*) buildPosterUrl: (NSDictionary*) dictionary {
+- (NSURL*) buildPosterUrl: (NSDictionary*) dictionary {
     NSDictionary* posters = [dictionary objectForKey:@"posters"];
-    NSString* thumbnail = [posters objectForKey:@"thumbnail"];
-    return thumbnail;
+    return [[NSURL alloc] initWithString:[posters objectForKey:@"thumbnail"]];
 }
 
 - (NSMutableString*) buildCastString: (NSDictionary*) dictionary {
     NSArray *cast = [dictionary objectForKey:@"abridged_cast"];
     NSMutableString *castString = [[NSMutableString alloc] init];
-    for (int i = 0; i < cast.count; i++) {
+
+    int count = cast.count <= 3 ? cast.count : 3;
+    for (int i = 0; i < count; i++) {
         NSDictionary *castMember = [cast objectAtIndex:i];
         [castString appendString:[castMember objectForKey:@"name"]];
-        if (i < cast.count - 1) {
+        if (i < count - 1) {
             [castString appendString:@", "];
         }
     }
